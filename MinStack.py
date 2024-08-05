@@ -1,5 +1,5 @@
 class MinNode:
-    def __init__(self, val, prev):
+    def __init__(self, val, prev=None):
         self.val = val
         self.prev = prev
 
@@ -14,7 +14,7 @@ class MinStack:
             self.min_so_far = MinNode(val, self.min_so_far)
             self.stack.append(self.min_so_far)
         else:
-            min_node = MinNode(val, None)
+            min_node = MinNode(val)
             self.stack.append(min_node)
 
     def pop(self) -> None:

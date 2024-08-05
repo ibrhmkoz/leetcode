@@ -27,8 +27,7 @@ class Solution:
             while j < k:
                 _sum = nums[j] + nums[k]
                 if _sum == _target:
-                    # Tuples are hashable, whereas lists are not, this is why we send triplets in the form of
-                    # tuples.
+                    # Tuples are hashable, whereas lists are not, this is why we send triplets in the form of tuples.
                     tsa.add((nums[i], nums[j], nums[k]))
                     j += 1
                     k -= 1

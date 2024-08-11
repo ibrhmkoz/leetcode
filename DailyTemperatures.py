@@ -10,16 +10,13 @@ class Pair:
 class SmartStack:
     def __init__(self, capacity: int):
         self.s = []
-        self.r = [0] * capacity
+        self.result = [0] * capacity
 
     def push(self, pair):
         while self.s and pair.value > self.s[-1].value:
             lp = self.s.pop()
-            self.r[lp.index] = pair.index - lp.index
+            self.result[lp.index] = pair.index - lp.index
         self.s.append(pair)
-
-    def result(self):
-        return self.r
 
 
 class Solution:
@@ -28,4 +25,4 @@ class Solution:
         for i, t in enumerate(temperatures):
             ss.push(Pair(t, i))
 
-        return ss.result()
+        return ss.result

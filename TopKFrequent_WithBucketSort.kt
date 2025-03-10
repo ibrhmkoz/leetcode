@@ -1,25 +1,34 @@
+class FixedIntArray(private val size: Int) {
+    private var ind = 0
+    private val intArray = IntArray(size)
+
+    fun add(v: Int): Boolean {
+        intArray[ind++] = v
+        return ind == size
+    }
+
+    fun unwrap() = intArray
+}
+
+
 class Solution {
     fun topKFrequent(nums: IntArray, k: Int): IntArray {
-        val m = nums.toList().groupingBy { it }.eachCount()
+        val buckets = MutableList<MutableList<Int>>(nums.size + 1) { mutableListOf() }
 
-        val bk = List<MutableList<Int>>(nums.size + 1) { mutableListOf() }
-
-        m.forEach {
-            bk[it.value].add(it.key)
+        nums.toList().groupingBy { it }.eachCount().forEach {
+            buckets[it.value].add(it.key)
         }
 
-        val tk = IntArray(k) { 0 }
-        var i = 0
-        for (b in bk.asReversed()) {
-            for (e in b) {
-                tk[i] = e
-                i++
-                if (i == k) {
-                    return tk
+        val topK = FixedIntArray(k)
+
+        outerLoop@ for (b in buckets.reversed()) {
+            for (num in b) {
+                if (topK.add(num)) {
+                    break@outerLoop
                 }
             }
         }
 
-        return tk
+        return topK.unwrap()
     }
 }

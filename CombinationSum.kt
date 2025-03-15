@@ -4,10 +4,6 @@ class Solution {
 
         val combinations = mutableListOf<List<Int>>()
         fun bt(l: MutableList<Int>, lo: Int, sum: Int) {
-            if (l in combinations) {
-                return
-            }
-
             if (sum == target) {
                 combinations.add(l.toList())
             } else if (sum > target) {

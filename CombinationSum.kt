@@ -8,12 +8,11 @@ class Solution {
                 combinations.add(l.toList())
             } else if (sum > target) {
                 return
-            } else {
-                for (i in lo..candidates.lastIndex) {
-                    l.add(candidates[i])
-                    bt(l, i, sum + candidates[i])
-                    l.removeLast()
-                }
+            }
+            for (i in lo..candidates.lastIndex) {
+                l.add(candidates[i])
+                bt(l, i, sum + candidates[i])
+                l.removeLast()
             }
         }
 

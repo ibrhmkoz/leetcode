@@ -18,12 +18,9 @@ class Solution {
             if (visited.contains(node)) return true
 
             visited.add(node)
-            val adj = graph[node]
-            val has = if (adj != null) {
+            val has = graph[node]?.let { adj ->
                 (adj - prev).any { hasCycle(it, node) }
-            } else {
-                false
-            }
+            } == true
 
             return has
         }

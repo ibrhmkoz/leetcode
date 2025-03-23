@@ -1,14 +1,13 @@
+fun anagramOf(s: String) = s.toCharArray().sorted().joinToString("")
+
 class AnagramGrouper {
-    private var angs = mutableMapOf<String, MutableList<String>>()
+    private val angs = mutableMapOf<String, MutableList<String>>()
 
     fun add(s: String) {
         val ang = anagramOf(s)
-        val l = angs.getOrDefault(ang, mutableListOf())
+        val l = angs.getOrPut(ang, ::mutableListOf)
         l.add(s)
-        angs[ang] = l
     }
-
-    private fun anagramOf(s: String) = s.toCharArray().sorted().joinToString("")
 
     fun groups(): List<List<String>> {
         return angs.values.toList()

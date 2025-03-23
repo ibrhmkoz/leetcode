@@ -5,8 +5,7 @@ class AnagramGrouper {
 
     fun add(s: String) {
         val ang = anagramOf(s)
-        val l = angs.getOrPut(ang, ::mutableListOf)
-        l.add(s)
+        angs.getOrPut(ang, ::mutableListOf).add(s)
     }
 
     fun groups(): List<List<String>> {

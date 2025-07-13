@@ -10,6 +10,6 @@ object Solution {
       charCount(c - 'a') -= 1
     }
 
-    return charCount.forall(_ == 0)
+    charCount.forall(_ == 0)
   }
 }

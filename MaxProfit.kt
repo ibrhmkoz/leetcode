@@ -5,14 +5,12 @@ class Solution {
         }
 
         var buy = prices.first()
-
         var maxProfit = 0
-
-        for (i in 1..prices.lastIndex) {
-            if (prices[i] <= buy) {
-                buy = prices[i]
+        for (p in prices.asSequence().drop(1)) {
+            if (p <= buy) {
+                buy = p
             } else {
-                val profit = prices[i] - buy
+                val profit = p - buy
                 maxProfit = maxOf(maxProfit, profit)
             }
         }

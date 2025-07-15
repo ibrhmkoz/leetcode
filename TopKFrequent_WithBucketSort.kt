@@ -1,6 +1,6 @@
 class Solution {
     fun topKFrequent(nums: IntArray, k: Int): IntArray {
-        val freqMap = nums.toList().groupingBy { it }.eachCount()
+        val freqMap = nums.asList().groupingBy { it }.eachCount()
 
         val bucket = List(nums.size + 1) { mutableListOf<Int>() }
 

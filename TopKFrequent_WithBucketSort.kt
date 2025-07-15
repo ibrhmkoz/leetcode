@@ -1,34 +1,21 @@
-class FixedIntArray(private val size: Int) {
-    private var ind = 0
-    private val intArray = IntArray(size)
-
-    fun add(v: Int): Boolean {
-        intArray[ind++] = v
-        return ind == size
-    }
-
-    fun unwrap() = intArray
-}
-
-
 class Solution {
     fun topKFrequent(nums: IntArray, k: Int): IntArray {
-        val buckets = MutableList<MutableList<Int>>(nums.size + 1) { mutableListOf() }
+        val freqMap = nums.toList().groupingBy { it }.eachCount()
 
-        nums.toList().groupingBy { it }.eachCount().forEach {
-            buckets[it.value].add(it.key)
+        val bucket = List(nums.size + 1) { mutableListOf<Int>() }
+
+        for ((num, freq) in freqMap.entries) {
+            bucket[freq].add(num)
         }
 
-        val topK = FixedIntArray(k)
+        val topKs = mutableListOf<Int>()
 
-        outerLoop@ for (b in buckets.reversed()) {
-            for (num in b) {
-                if (topK.add(num)) {
-                    break@outerLoop
-                }
+        for (freqGroup in bucket.reversed()) {
+            if (topKs.size < k) {
+                topKs.addAll(freqGroup)
             }
         }
 
-        return topK.unwrap()
+        return topKs.toIntArray()
     }
 }

@@ -4,11 +4,8 @@ class Solution {
 
         fun climb(sum: Int): Int {
             if (sum > n) return 0
-            cache[sum]?.let {
-                return it
-            }
-            return (1..2).sumOf { climb(sum + it) }.also {
-                cache[sum] = it
+            return cache.getOrPut(sum) {
+                (1..2).sumOf { climb(sum + it) }
             }
         }
 

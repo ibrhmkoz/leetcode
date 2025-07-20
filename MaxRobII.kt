@@ -1,23 +1,17 @@
 class Solution {
     fun rob(nums: IntArray): Int {
-        if (nums.isEmpty()) return 0
-        else if (nums.size == 1) return nums[0]
-
-        val cache = mutableMapOf<Int, Int>()
-        fun maxRob(arr: IntArray, i: Int): Int {
-            if (i !in arr.indices) return 0
-            cache[i]?.let { return it }
-            val result = maxOf(arr[i] + maxRob(arr, i + 2), maxRob(arr, i + 1))
-            cache[i] = result
-            return result
+        if (nums.size == 1) {
+            return nums.first()
         }
-
-        val includingFirst = maxRob(nums.slice(0 until nums.lastIndex).toIntArray(), 0)
-        cache.clear()
-        val includingLast = maxRob(nums.slice(1..nums.lastIndex).toIntArray(), 0)
+        val cache = mutableMapOf<Int, Int>()
+        fun maxRob(houses: List<Int>, i: Int): Int {
+            if (i > houses.lastIndex) return 0
+            return cache.getOrPut(i) { maxOf(houses[i] + maxRob(houses, i + 2), maxRob(houses, i + 1)) }
+        }
+       
         return maxOf(
-            includingFirst,
-            includingLast,
+            maxRob(nums.asList().subList(0, nums.lastIndex), 0).also { cache.clear() },
+            maxRob(nums.asList().subList(1, nums.size), 0)
         )
     }
 }

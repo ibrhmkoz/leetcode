@@ -1,20 +1,18 @@
 class Solution {
     fun maxProduct(nums: IntArray): Int {
-        var max = nums.max()
-        var localMin = 1
-        var localMax = 1
+        var min = nums.first()
+        var max = nums.first()
+        var globMax = nums.first()
+        
+        for (num in nums.asSequence().drop(1)) {
+            val oldMin = min
+            val oldMax = max
+            min = minOf(oldMin * num, oldMax * num, num)
+            max = maxOf(oldMax * num, oldMin * num, num)
 
-        for (n in nums) {
-            if (n == 0) {
-                localMin = 1
-                localMax = 1
-                continue
-            }
-            var tmp = localMax
-            localMax = maxOf(localMax * n, n, localMin * n)
-            localMin = minOf(tmp * n, n, localMin * n)
-            max = maxOf(localMax, max)
+            globMax = maxOf(max, globMax)
         }
-        return max
+
+        return globMax
     }
 }

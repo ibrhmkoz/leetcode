@@ -1,16 +1,20 @@
 class Solution {
     fun wordBreak(s: String, wordDict: List<String>): Boolean {
         val cache = mutableMapOf<Int, Boolean>()
-        fun cmp(i: Int): Boolean {
-            if (i == s.length) return true
-            cache[i]?.let { return it }
+        fun wb(i: Int): Boolean {
+            if (i == s.length) {
+                return true
+            }
 
-            val result =
-                wordDict.any { i + it.length <= s.length && s.substring(i until i + it.length) == it && cmp(i + it.length) }
-            cache[i] = result
-            return result
+            return cache.getOrPut(i) {
+                wordDict
+                    .filter {
+                        it == runCatching { s.substring(i until i + it.length) }.getOrNull()
+                    }
+                    .any { wb(i + it.length) }
+            }
         }
 
-        return cmp(0)
+        return wb(0)
     }
 }

@@ -8,9 +8,7 @@ class Solution {
 
             return cache.getOrPut(i) {
                 wordDict
-                    .filter {
-                        it == runCatching { s.substring(i until i + it.length) }.getOrNull()
-                    }
+                    .filter { it == runCatching { s.substring(i until i + it.length) }.getOrNull() }
                     .any { wb(i + it.length) }
             }
         }

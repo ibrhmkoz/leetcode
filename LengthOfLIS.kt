@@ -4,14 +4,12 @@ class Solution {
             nums.lastIndex to 1
         )
 
-        fun f(i: Int): Int {
-            return cache.getOrPut(i) {
-                (i + 1..nums.lastIndex).filter { nums[it] > nums[i] }.maxOfOrNull { 1 + f(it) } ?: 1
-            }
+        fun lisFromIndex(i: Int): Int = cache.getOrPut(i) {
+            (i + 1..nums.lastIndex).filter { nums[it] > nums[i] }.maxOfOrNull { 1 + lisFromIndex(it) } ?: 1
         }
 
         for (i in nums.indices) {
-            f(i)
+            lisFromIndex(i)
         }
 
         return cache.values.max()

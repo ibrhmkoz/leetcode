@@ -1,16 +1,12 @@
 class Solution {
     fun maxSubArray(nums: IntArray): Int {
-        var max = Int.MIN_VALUE
+        var max = nums.first()
         var localMax = 0
-        for (num in nums) {
-            if (localMax < 0) {
-                localMax = num
-            } else {
-                localMax += num
-            }
-
+        for (n in nums) {
+            localMax = maxOf(n, n + localMax)
             max = maxOf(max, localMax)
         }
+
         return max
     }
 }

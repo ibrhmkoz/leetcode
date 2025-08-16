@@ -3,7 +3,7 @@ class TreeNode(var `val`: Int) {
     var right: TreeNode? = null
 }
 
-class TreeIter(root: TreeNode?) : Iterator<TreeNode> {
+class LevelOrderTreeIter(root: TreeNode?) : Iterator<TreeNode> {
     private val unvisitedNodes = mutableListOf<TreeNode>().apply {
         root?.let { add(it) }
     }
@@ -29,6 +29,6 @@ class Solution {
                         && isSame(n1?.right, n2?.right)
             }
 
-        return TreeIter(root).asSequence().any { isSame(it, subRoot) }
+        return LevelOrderTreeIter(root).asSequence().any { isSame(it, subRoot) }
     }
 }

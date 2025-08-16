@@ -4,16 +4,16 @@ class TreeNode(var `val`: Int) {
 }
 
 class LevelOrderTreeIter(root: TreeNode?) : Iterator<TreeNode> {
-    private val unvisitedNodes = mutableListOf<TreeNode>().apply {
+    private val unvisiteds = ArrayDeque<TreeNode>().apply {
         root?.let { add(it) }
     }
 
-    override fun hasNext() = unvisitedNodes.isNotEmpty()
+    override fun hasNext() = unvisiteds.isNotEmpty()
 
     override fun next(): TreeNode {
-        val node = unvisitedNodes.removeFirst()
-        node.left?.let { unvisitedNodes.add(it) }
-        node.right?.let { unvisitedNodes.add(it) }
+        val node = unvisiteds.removeFirst()
+        node.left?.let { unvisiteds.add(it) }
+        node.right?.let { unvisiteds.add(it) }
         return node
     }
 }

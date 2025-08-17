@@ -1,23 +1,19 @@
 class Solution {
     fun combinationSum(candidates: IntArray, target: Int): List<List<Int>> {
         candidates.sort()
-
-        val combinations = mutableListOf<List<Int>>()
-        fun bt(l: MutableList<Int>, lo: Int, sum: Int) {
-            if (sum == target) {
-                combinations.add(l.toList())
-            } else if (sum > target) {
-                return
-            }
-            for (i in lo..candidates.lastIndex) {
-                l.add(candidates[i])
-                bt(l, i, sum + candidates[i])
-                l.removeLast()
+        val combs = mutableListOf<List<Int>>()
+        fun search(seq: List<Int>, p: Int, sum: Int) {
+            when {
+                sum > target || p == candidates.size -> Unit
+                sum == target -> combs.add(seq)
+                else -> {
+                    search(seq + candidates[p], p, sum + candidates[p])
+                    search(seq, p + 1, sum)
+                }
             }
         }
 
-        bt(mutableListOf(), 0, 0)
-
-        return combinations
+        search(emptyList(), 0, 0)
+        return combs
     }
 }

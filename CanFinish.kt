@@ -1,7 +1,7 @@
 class Solution {
     fun canFinish(numCourses: Int, prerequisites: Array<IntArray>): Boolean {
         val graph = mutableMapOf<Int, MutableList<Int>>()
-        for ((from, to) in prerequisites) {
+        for ((to, from) in prerequisites) {
             graph.getOrPut(from) { mutableListOf() }.add(to)
         }
 
@@ -12,13 +12,12 @@ class Solution {
                 if (!path.add(node)) {
                     true
                 } else {
-                    graph
-                        .getOrElse(node) { mutableSetOf() }
-                        .any { hasCycle(it) }
+                    graph[node]
+                        ?.any { hasCycle(it) } == true
                         .also { path.remove(node) }
                 }
             }
 
-        return !graph.keys.any { hasCycle(it) }
+        return graph.keys.none { hasCycle(it) }
     }
 }

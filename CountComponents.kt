@@ -5,33 +5,35 @@ class Solution {
      * @return: the number of connected components
      */
     fun countComponents(n: Int, edges: Array<IntArray>): Int {
-        val graph = mutableMapOf<Int, MutableSet<Int>>()
+        val graph = mutableMapOf<Int, MutableList<Int>>()
 
-        for (edge in edges) {
-            graph.getOrPut(edge[0], ::mutableSetOf).add(edge[1])
-            graph.getOrPut(edge[1], ::mutableSetOf).add(edge[0])
+        for ((u, v) in edges) {
+            graph.getOrPut(u) { mutableListOf() }.add(v)
+            graph.getOrPut(v) { mutableListOf() }.add(u)
         }
 
-        val visited = mutableSetOf<Int>()
-        fun visit(node: Int, prev: Int) {
-            if (visited.contains(node)) return
-            visited.add(node)
+        val visited = BooleanArray(n) { false }
 
-            graph[node]?.let { adj ->
-                (adj - prev).forEach {
-                    visit(it, node)
-                }
+        fun dfs(u: Int) {
+            if (visited[u]) {
+                return
+            }
+            visited[u] = true
+
+            graph[u]?.forEach { v ->
+                dfs(v)
             }
         }
 
-        var count = 0
-        (0 until n).forEach {
-            if (!visited.contains(it)) {
-                count++
-                visit(it, it)
+        var res = 0
+
+        for (i in 0 until n) {
+            if (!visited[i]) {
+                res++
+                dfs(i)
             }
         }
 
-        return count
+        return res
     }
 }

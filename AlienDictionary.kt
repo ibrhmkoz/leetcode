@@ -2,6 +2,12 @@ class Solution {
     fun foreignDictionary(words: Array<String>): String {
         val adj = mutableMapOf<Char, MutableSet<Char>>()
 
+        for (w in words) {
+            for (c in w) {
+                adj.putIfAbsent(c, mutableSetOf())
+            }
+        }
+
         for ((w1, w2) in words.asList().windowed(2)) {
             for ((c1, c2) in w1.zip(w2)) {
                 if (c1 != c2) {

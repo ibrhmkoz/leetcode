@@ -1,11 +1,11 @@
 class Solution {
     fun subsets(nums: IntArray): List<List<Int>> {
-        val result = mutableListOf<List<Int>>(listOf())
+        val paths = mutableListOf<List<Int>>(listOf())
 
         val path = mutableListOf<Int>()
         fun visit(u: Int) {
             path.add(nums[u])
-            result.add(path.toList())
+            paths.add(path.toList())
             for (v in u + 1..nums.lastIndex) {
                 visit(v)
             }
@@ -17,6 +17,6 @@ class Solution {
             visit(u)
         }
 
-        return result
+        return paths
     }
 }

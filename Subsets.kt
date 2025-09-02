@@ -3,8 +3,8 @@ class Solution {
         val result = mutableListOf<List<Int>>(listOf())
 
         for (num in nums) {
-            for (s in result.toList()) {
-                result.add(s + num)
+            for (subset in result.toList()) {
+                result.add(subset + num)
             }
         }
 

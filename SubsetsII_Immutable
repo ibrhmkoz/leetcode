@@ -1,0 +1,18 @@
+class Solution {
+    fun subsetsWithDup(nums: IntArray): List<List<Int>> {
+        nums.sort()
+        val subsets = mutableListOf<List<Int>>()
+        fun bt(current: List<Int>, i: Int) {
+            subsets.add(current.toList())
+            for (j in i until nums.size) {
+                if (j > i && nums[j] == nums[j - 1]) {
+                    continue
+                }
+                bt(current + nums[j], j + 1)
+            }
+        }
+
+        bt(emptyList(), 0)
+        return subsets
+    }
+}

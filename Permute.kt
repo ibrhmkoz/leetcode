@@ -1,22 +1,24 @@
 class Solution {
     fun permute(nums: IntArray): List<List<Int>> {
-        val choices = nums.toSet()
+        val choices = nums.toMutableSet()
         val permutation = mutableListOf<Int>()
         val permutations = mutableListOf<List<Int>>()
 
-        fun _permute(currentChoices: Set<Int>) {
-            if (permutation.size == choices.size) {
+        fun _permute() {
+            if (permutation.size == nums.size) {
                 permutations.add(permutation.toList())
             }
-            for (choice in currentChoices) {
+
+            for (choice in choices.toList()) {
                 permutation.add(choice)
-                _permute(currentChoices - choice)
+                choices.remove(choice)
+                _permute()
                 permutation.removeLast()
+                choices.add(choice)
             }
         }
 
-        _permute(choices)
-
+        _permute()
         return permutations
     }
 }

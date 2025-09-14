@@ -29,8 +29,8 @@ class Solution {
             if (freshCount > 0) {
                 minutes++
             }
-            val currentLevel = queue.size
-            repeat(currentLevel) {
+            val levelSize = queue.size
+            repeat(levelSize) {
                 val (i, j) = queue.removeFirst()
                 for ((di, dj) in dirs) {
                     val ni = i + di

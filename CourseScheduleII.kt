@@ -8,23 +8,18 @@ class Solution {
         val order = mutableListOf<Int>()
         val visited = IntArray(numCourses)
 
-        // 0: unseen, 1 seen, 2 loop, 3 not-loop
+        // 0: unvisited, 1: visiting, 2: no-cycle
         fun dfs(course: Int): Boolean {
-            if (visited[course] == 1) {
-                visited[course] = 2
-                return true
-            } else if (visited[course] == 2) {
-                return true
-            } else if (visited[course] == 3) {
-                return false
+            when (visited[course]) {
+                1 -> return true
+                2 -> return false
             }
 
             visited[course] = 1
             if ((graph[course] ?: emptySet()).any { dfs(it) }) {
-                visited[course] = 2
                 return true
             }
-            visited[course] = 3
+            visited[course] = 2
             order.add(course)
             return false
         }

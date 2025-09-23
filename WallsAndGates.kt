@@ -11,7 +11,6 @@ class Solution {
             -1 to 0
         )
 
-
         fun bfs(i: Int, j: Int) {
             val queue = ArrayDeque<Pair<Int, Int>>().apply {
                 add(i to j)

@@ -4,7 +4,6 @@ class Solution {
      * @return: nothing
      */
     fun wallsAndGates(rooms: Array<IntArray>): Unit {
-        // write your code here
         val dirs = listOf(
             0 to 1,
             0 to -1,

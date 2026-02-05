@@ -1,3 +1,12 @@
+/**
+ * Search in Rotated Sorted Array
+ * 
+ * Find the rotation pivot (minimum element) by maintaining a range [lo, hi] guaranteed
+ * to contain it. Iteratively shrink this range while preserving the invariant that the
+ * pivot remains within it. The range converges to the pivot index. Then binary search
+ * the appropriate sorted segment for the target.
+ */
+
 fun binarySearch(nums: IntArray, start: Int, end: Int, target: Int): Int {
     var lo = start
     var hi = end

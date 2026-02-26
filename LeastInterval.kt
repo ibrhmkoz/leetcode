@@ -1,6 +1,6 @@
 class Solution {
     fun leastInterval(tasks: CharArray, n: Int): Int {
-        val queue = PriorityQueue<Int> { a, b -> b - a }.apply {
+        val queue = PriorityQueue<Int>(compareByDescending { it }).apply {
             addAll(tasks.asList().groupingBy { it }.eachCount().values)
         }
         val frozen = ArrayDeque<Pair<Int, Int>>()

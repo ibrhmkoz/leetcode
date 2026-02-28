@@ -13,7 +13,7 @@ class BoundedPriorityQueue<T>(
 
 data class Tweet(val id: Int, val timestamp: Int, val userId: Int)
 
-class Twitter() {
+class Twitter {
     private val userTweets = mutableMapOf<Int, BoundedPriorityQueue<Tweet>>()
     private val userFollowees = mutableMapOf<Int, MutableSet<Int>>()
     private val k = 10

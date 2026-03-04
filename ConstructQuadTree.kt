@@ -22,11 +22,11 @@ class Solution {
 
         fun _construct(row: Int, column: Int, size: Int): Node {
             val isLeaf = isLeaf(row, column, size)
-            if (isLeaf != null) {
-                return Node(isLeaf, true)
+            return if (isLeaf != null) {
+                Node(isLeaf, true)
             } else {
                 val half = size / 2
-                return Node(`val` = false, isLeaf = false).apply {
+                Node(`val` = false, isLeaf = false).apply {
                     this.topLeft = _construct(row, column, half)
                     this.topRight = _construct(row, column + half, half)
                     this.bottomLeft = _construct(row + half, column, half)

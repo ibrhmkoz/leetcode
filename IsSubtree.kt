@@ -1,34 +1,16 @@
-class TreeNode(var `val`: Int) {
-    var left: TreeNode? = null
-    var right: TreeNode? = null
-}
-
-class LevelOrderTreeIter(root: TreeNode?) : Iterator<TreeNode> {
-    private val unvisiteds = ArrayDeque<TreeNode>().apply {
-        root?.let { add(it) }
-    }
-
-    override fun hasNext() = unvisiteds.isNotEmpty()
-
-    override fun next(): TreeNode {
-        val node = unvisiteds.removeFirst()
-        node.left?.let { unvisiteds.add(it) }
-        node.right?.let { unvisiteds.add(it) }
-        return node
-    }
-}
-
 class Solution {
     fun isSubtree(root: TreeNode?, subRoot: TreeNode?): Boolean {
-        fun isSame(n1: TreeNode?, n2: TreeNode?): Boolean =
-            if (n1 == null && n2 == null) {
-                true
-            } else {
-                n1?.`val` == n2?.`val`
-                        && isSame(n1?.left, n2?.left)
-                        && isSame(n1?.right, n2?.right)
+        fun isSame(n: TreeNode?, m: TreeNode?): Boolean {
+            if (n == null && m == null) {
+                return true
             }
+            return n?.`val` == m?.`val` && isSame(n?.left, m?.left) && isSame(n?.right, m?.right)
+        }
 
-        return LevelOrderTreeIter(root).asSequence().any { isSame(it, subRoot) }
+        // the following is necessary because 
+        // return isSame(root, subRoot) || isSubtree(root?.left, subRoot) || isSubtree(root?.right, subRoot)
+        // makes access safe but doesn't remove infinite recursion because it resolves into null and keeps going without stop
+        if (root == null) return subRoot == null
+        return isSame(root, subRoot) || isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot)
     }
 }

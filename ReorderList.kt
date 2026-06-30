@@ -1,55 +1,34 @@
-class ListNode(var `val`: Int) {
-    var next: ListNode? = null
-}
-
-fun ListNode?.middle(): ListNode? {
-    var slow = this
-    var fast = this?.next
-
-    while (fast != null) {
-        slow = slow?.next
-        fast = fast.next?.next
-    }
-
-    return slow
-}
-
-fun ListNode?.reverse() {
-    var cur = this
-    var prev: ListNode? = null
-    while (cur != null) {
-        val next = cur.next
-        cur.next = prev
-        prev = cur
-        cur = next
-    }
-}
-
-fun ListNode?.tail(): ListNode? {
-    var cur: ListNode = this ?: return null
-    while (cur.next != null) {
-        cur = cur.next!!
-    }
-
-    return cur
-}
-
 class Solution {
     fun reorderList(head: ListNode?): Unit {
-        val mid = head.middle()
-        var lo = head
-        var hi = head.tail()
-        mid.reverse()
-        while (lo != mid) {
-            val loNext = lo?.next
-            val hiNext = hi?.next
+        var s = head
+        var f = head
 
-            lo?.next = hi
-            hi?.next = loNext
-
-            lo = loNext
-            hi = hiNext
+        while (f?.next != null) {
+            s = s?.next
+            f = f.next?.next
         }
-        lo?.next = null
+
+        var c = s?.next
+        s?.next = null
+
+        var p: ListNode? = null
+        while (c != null) {
+            val t = c.next
+            c.next = p
+            p = c
+            c = t
+        }
+
+        var a = head
+        var b = p
+
+        while (b != null) {
+            val t1 = a?.next
+            val t2 = b.next
+            a?.next = b
+            b.next = t1
+            a = t1
+            b = t2
+        }
     }
 }

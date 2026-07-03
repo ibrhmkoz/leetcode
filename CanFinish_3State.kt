@@ -1,3 +1,21 @@
+/*
+                    +------------------+
+                    |    Unvisited     |
+                    |  vis[n] unset    |
+                    +------------------+
+                        /            \
+        re-entered     /              \  unwinds
+        mid-visit     /                \  cleanly
+        (call before /                  \ (no re-call)
+        unwind)     /                    \
+                   v                      v
+          +----------------+      +------------------+
+     +--->|     Cycle      |      |     No cycle     |<---+
+     |    |  return true   |      |  return false    |    |
+     +----+----------------+      +------------------+----+
+       called again                      called again
+ */
+
 class Solution {
     fun canFinish(numCourses: Int, prerequisites: Array<IntArray>): Boolean {
         val g = mutableMapOf<Int, MutableSet<Int>>()

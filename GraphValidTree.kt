@@ -1,34 +1,15 @@
 class Solution {
-    /**
-     * @param n: An integer
-     * @param edges: a list of undirected edges
-     * @return: true if it's a valid tree, or false
-     */
     fun validTree(n: Int, edges: Array<IntArray>): Boolean {
-        val graph = mutableMapOf<Int, MutableSet<Int>>()
-
-        for (edge in edges) {
-            graph.getOrPut(edge[0], ::mutableSetOf).add(edge[1])
-            graph.getOrPut(edge[1], ::mutableSetOf).add(edge[0])
+        val g = mutableMapOf<Int, MutableSet<Int>>()
+        for ((u, v) in edges) {
+            g.getOrPut(u) { mutableSetOf() }.add(v)
+            g.getOrPut(v) { mutableSetOf() }.add(u)
         }
 
         val visited = mutableSetOf<Int>()
+        fun hasCycle(p: Int, n: Int): Boolean =
+            !visited.add(n) || ((g[n] ?: emptySet()) - p).any { hasCycle(n, it) }
 
-        fun hasCycle(node: Int, prev: Int): Boolean {
-            if (visited.contains(node)) return true
-
-            visited.add(node)
-            val has = graph[node]?.let { adj ->
-                (adj - prev).any { hasCycle(it, node) }
-            } == true
-
-            return has
-        }
-
-        if (hasCycle(0, 0)) {
-            return false
-        }
-
-        return visited.size == n
+        return !hasCycle(0, 0) && visited.size == n
     }
 }

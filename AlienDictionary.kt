@@ -1,53 +1,55 @@
 class Solution {
     fun foreignDictionary(words: Array<String>): String {
-        val adj = mutableMapOf<Char, MutableSet<Char>>()
+        val g = mutableMapOf<Char, MutableList<Char>>()
 
         for (w in words) {
             for (c in w) {
-                adj.putIfAbsent(c, mutableSetOf())
+                g[c] = mutableListOf()
             }
         }
 
-        for ((w1, w2) in words.asList().windowed(2)) {
-            for ((c1, c2) in w1.zip(w2)) {
-                if (c1 != c2) {
-                    adj.getOrPut(c1) { mutableSetOf() }.add(c2)
-                    break
+        outer@ for ((w1, w2) in words.asList().windowed(2)) {
+            for ((a, b) in w1.zip(w2)) {
+                if (a != b) {
+                    g[a]!!.add(b)
+                    continue@outer
                 }
             }
-        }
 
-        val visited = mutableSetOf<Char>()
-        val path = mutableSetOf<Char>()
-        val res = mutableListOf<Char>()
-
-        fun dfs(char: Char): Boolean {
-            if (char in path) {
-                return true
-            }
-
-            if (char in visited) {
-                return false
-            }
-
-            visited.add(char)
-            path.add(char)
-
-            if ((adj[char] ?: emptySet()).any { dfs(it) }) {
-                return true
-            }
-
-            path.remove(char)
-            res.add(char)
-            return false
-        }
-
-        for (char in adj.keys) {
-            if (dfs(char)) {
+            if (w1.length > w2.length) {
                 return ""
             }
         }
 
-        return res.reversed().joinToString("")
+        val res = mutableListOf<Char>()
+
+        val visited = mutableMapOf<Char, Int>()
+        fun hasCycle(c: Char): Boolean {
+            visited[c]?.let {
+                if (it == 1) {
+                    return true
+                } else if (it == 2) {
+                    return false
+                }
+            }
+
+            visited[c] = 1
+            for (adj in g[c] ?: emptyList()) {
+                if (hasCycle(adj)) {
+                    return true
+                }
+            }
+            visited[c] = 2
+            res.add(c)
+            return false
+        }
+
+        for (c in g.keys) {
+            if (hasCycle(c)) {
+                return ""
+            }
+        }
+
+        return res.asReversed().joinToString("")
     }
 }

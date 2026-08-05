@@ -1,17 +1,10 @@
 class Solution {
     fun wordBreak(s: String, wordDict: List<String>): Boolean {
         val cache = mutableMapOf<Int, Boolean>()
-        fun wb(i: Int): Boolean {
-            if (i == s.length) {
-                return true
+        fun wb(i: Int): Boolean =
+            i == s.length || cache.getOrPut(i) {
+                wordDict.any { s.startsWith(it, i) && wb(i + it.length) }
             }
-
-            return cache.getOrPut(i) {
-                wordDict
-                    .filter { it == runCatching { s.substring(i until i + it.length) }.getOrNull() }
-                    .any { wb(i + it.length) }
-            }
-        }
 
         return wb(0)
     }

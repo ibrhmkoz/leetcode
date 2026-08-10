@@ -1,38 +1,26 @@
-fun isPalindrome(s: String): Boolean {
-    var lo = 0
-    var hi = s.lastIndex
-
-    while (lo <= hi) {
-        if (s[lo] != s[hi]) {
-            return false
-        }
-        lo++
-        hi--
-    }
-
-    return true
-}
-
 class Solution {
     fun partition(s: String): List<List<String>> {
-        val result = mutableListOf<List<String>>()
-
-        val current = mutableListOf<String>()
-        fun bt(i: Int) {
-            if (i == s.length) {
-                result.add(current.toList())
+        val res = mutableListOf<List<String>>()
+        val seq = mutableListOf<String>()
+        fun pal(start: Int) {
+            if (start == s.length) {
+                res.add(seq.toList())
             }
-            for (j in i..s.lastIndex) {
-                val substring = s.substring(i..j)
-                if (isPalindrome(substring)) {
-                    current.add(substring)
-                    bt(j + 1)
-                    current.removeLast()
+
+            for (end in start..s.lastIndex) {
+                val sub = s.substring(start..end)
+                if (sub.isPalindrome()) {
+                    seq.add(sub)
+                    pal(end + 1)
+                    seq.removeLast()
                 }
             }
         }
 
-        bt(0)
-        return result
+        pal(0)
+
+        return res
     }
 }
+
+fun String.isPalindrome() = (0..<length / 2).all { this[it] == this[this.lastIndex - it] }

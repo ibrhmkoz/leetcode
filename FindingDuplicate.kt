@@ -2,37 +2,40 @@
  * GRAPH PERSPECTIVE & INTUITION:
  * 
  * 1. Setup (Nodes 1..n -> Graph F):
- *    Ignoring index 0 for a moment, the remaining array represents a directed graph 
- *    F with n nodes and n edges (i -> nums[i]). Because total edges equal total nodes, 
- *    every component in F must contain at least one cycle. F can contain at most 
- *    one node with in-degree >= 2 (the duplicate value). If such a node exists, 
- *    it acts as the entrance to a cycle, creating a "tail" leading into it.
+ *    If we temporarily ignore index 0, the rest of the array forms a directed graph F 
+ *    with n nodes and n edges (i -> nums[i]). Having equal edges and nodes guarantees 
+ *    that every component contains at least one cycle. F can contain at most one node 
+ *    with in-degree >= 2 (the duplicate value), which serves as a cycle entrance.
  * 
  * 2. Incorporating Index 0 (Graph G):
- *    Reintroducing index 0 merges it with F to form graph G. Since no element in 
- *    nums can equal 0 (values are in range [1, n]), node 0 has an in-degree of 0. 
- *    It serves strictly as the starting head of the main tail leading toward the 
- *    cycle entrance.
+ *    Reintroducing index 0 merges it with F to form graph G. Because values in nums are 
+ *    in the range [1, n], no element points to index 0, giving it an in-degree of 0. 
+ *    Node 0 acts strictly as the starting head of a tail that leads into the cycle.
  * 
- * 3. Phase 1 (Finding the Collision Point):
- *    We place two pointers (slow and fast) at node 0. Moving slow by 1 step and fast 
- *    by 2 steps guarantees they will collide inside the cycle. Let F be the tail 
- *    length (distance from node 0 to the entrance), C be the cycle length, and 'a' 
- *    be the distance from the entrance to the collision point.
+ * 3. Phase 1 (Locating the Collision Point):
+ *    Moving `slow` by 1 step and `fast` by 2 steps guarantees they will meet inside 
+ *    the cycle at a collision point.
+ *      - F = Distance from node 0 to the cycle entrance
+ *      - C = Cycle length
+ *      - a = Distance from cycle entrance to collision point
  * 
- * 4. Phase 2 (Finding the In-Degree >= 2 Node):
  *    At collision: Distance(Fast) = 2 * Distance(Slow)
- *      => 2(F + a) = F + a + nC  =>  F = (n - 1)C + (C - a)
+ *      => 2(F + a) = F + a + nC
+ *      => F + a = nC
+ *      => F = (n - 1)C + (C - a)
  * 
- *    Algebraically:
- *    - Pointer A starting at node 0 reaches the entrance in exactly F steps.
- *    - Pointer B starting at the collision point takes (C - a) steps to reach 
- *      the entrance for the first time, plus (n - 1) full C-length laps.
+ * 4. Phase 2 (Finding the Cycle Entrance):
+ *    If we make both pointers take exactly F steps:
+ *      - Pointer A (starting at node 0) takes F steps to land directly on the 
+ *        cycle entrance by definition.
+ *      - Pointer B (starting at the collision point) takes F steps, broken down as:
+ *          * (C - a) steps to reach the cycle entrance for the first time.
+ *          * (n - 1)C steps completing (n - 1) full laps around the cycle,
+ *            ending up right back at the entrance.
  * 
- *    Therefore, taking F steps from the collision point also lands Pointer B back 
- *    at the cycle entrance. Resetting slow to node 0 and advancing both pointers 
- *    1 step at a time guarantees they will first intersect at step F— pinpointing 
- *    the cycle entrance (the duplicate integer).
+ *    Because Pointer B also ends up at the entrance after F steps, advancing both 
+ *    pointers 1 step at a time from node 0 and the collision point guarantees that 
+ *    their very first meeting point will be the cycle entrance (the duplicate integer).
  */
 
 class Solution {
